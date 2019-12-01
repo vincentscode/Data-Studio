@@ -1,0 +1,10 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% if title %} {{ title }} - {% endif %}Data Studio</title>
+    </head>
+    <body>
+        <h1>Welcome to your personal Data Studio{% if user and user.logged_in %}, {{ user.username }} {% endif %}.</h1>
+        <a href="/auth/google/login">Google Login</a>
+    </body>
+</html>
