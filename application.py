@@ -11,6 +11,7 @@ def make_shell_context():
 
 
 if __name__ == '__main__':
+    print("application.py")
     if not os.path.exists(os.path.join(config.basedir, 'app.db')):
         print("Creating the database...")
         db.create_all()

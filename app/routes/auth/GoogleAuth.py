@@ -13,7 +13,17 @@ base_url = '/auth/'
 ACCESS_TOKEN_URI = 'https://www.googleapis.com/oauth2/v4/token'
 AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent'
 
-AUTHORIZATION_SCOPE = 'openid email profile https://www.googleapis.com/auth/drive.file'
+AUTHORIZATION_SCOPE = ' '.join([
+    # basic information
+    'openid', 'email', 'profile',
+
+    # fitness api
+    'https://www.googleapis.com/auth/fitness.location.read', 'https://www.googleapis.com/auth/fitness.activity.read',
+
+    # tasks
+    'https://www.googleapis.com/auth/tasks.readonly',
+
+])
 
 BASE_URI = "http://localhost:5000"
 AUTH_REDIRECT_URI = BASE_URI + "/auth/google"
