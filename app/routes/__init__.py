@@ -14,6 +14,9 @@ labels = [
     'SEP', 'OCT', 'NOV', 'DEC'
 ]
 
+enable_tasks = False
+enable_fit = False
+
 
 @app.route("/")
 @app.route("/index")
@@ -26,6 +29,8 @@ def index():
 
     month_completed_tasks = {}
     try:
+        if not enable_tasks:
+            raise Exception("Tasks integration disabled")
         print("Google Tasks")
         tasks = GoogleTasksProvider.get_data()
         for task_list_key in tasks.keys():
@@ -46,18 +51,21 @@ def index():
     except Exception as e:
         print(e)
 
+    fitness_data = {}
     try:
+        if not enable_tasks:
+            raise Exception("Fit integration disabled")
         print("Google Fit")
-        data = GoogleFitProvider.get_data()
-        f = open("test.txt", "w")
-        f.write(str(data))
-        f.flush()
-        f.close()
+        for i in range(1, 12+1):
+            month_data = GoogleFitProvider.get_data(datetime.now().year-2, i)
+            print(month_data["bucket"][0]["dataset"][0]["point"])
+            fitness_data[i] = len(month_data["bucket"][0]["dataset"][0]["point"])
     except Exception as e:
         print(e)
-    return render_template('index.html', title='Dashboard', user=user, max=round(max(*month_completed_tasks.values())), labels=labels,
+
+    return render_template('index.html', title='Dashboard', user=user, max=round(max(*month_completed_tasks.values(), 0, 0)), labels=labels,
                            values1=month_completed_tasks.values(), label1="Completed Tasks",
-                           values2={1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}, label2="Fitness")
+                           values2=fitness_data.values(), label2="Fitness")
 
 
 @app.before_request
